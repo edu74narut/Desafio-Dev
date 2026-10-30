@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as PlantaRepository from "@repositories/PlantaRepository"
-import { Luminosidade } from "@prisma/client";
+import { Luminosidade, Prisma } from "@prisma/client";
 
 export const createPlanta =  async(req: Request, res:Response) => {
     try{
@@ -69,7 +69,32 @@ export const createPlanta =  async(req: Request, res:Response) => {
 
 export const getPlantas = async(req: Request, res: Response) => {
     try{
-        const plantas = await PlantaRepository.getPlantas();
+        const { luminosidade, petFriend } = req.query;
+        const filtros: Prisma.PlantaWhereInput = {};
+        
+        if(luminosidade !== undefined){
+            if(
+                typeof luminosidade !== "string" ||
+                !Object.values(Luminosidade).includes(luminosidade as Luminosidade)
+            )
+            
+            return res.status(400).json({
+                message:"Luminosidade inválida!"
+            });
+            
+            filtros.luminosidade = luminosidade as Luminosidade;
+        }
+
+        if(petFriend !== undefined){
+            if(petFriend !== "true" && petFriend !== "false"){
+                return res.status(400).json({
+                    message: "PetFriend deve ser true ou false!"
+                });
+            }
+            filtros.petFriend = petFriend ==="true";
+        }
+
+        const plantas = await PlantaRepository.getPlantas(filtros);
         return res.status(200).json(plantas)
     }
     catch(error){
