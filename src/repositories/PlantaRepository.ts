@@ -29,4 +29,12 @@ export const updatePlanta = async(
         where: {id:id},
         data: data
     });
-}
+};
+
+export const deletePlanta = async(id:number) => {
+    return await prisma.planta.delete({
+        where: {
+            id: id
+        }
+    });
+};
