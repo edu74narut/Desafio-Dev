@@ -69,7 +69,7 @@ export const createPlanta =  async(req: Request, res:Response) => {
 
 export const getPlantas = async(req: Request, res: Response) => {
     try{
-        const { luminosidade, petFriend } = req.query;
+        const { luminosidade, petFriend, nome } = req.query;
         const filtros: Prisma.PlantaWhereInput = {};
         
         if(luminosidade !== undefined){
@@ -92,6 +92,19 @@ export const getPlantas = async(req: Request, res: Response) => {
                 });
             }
             filtros.petFriend = petFriend ==="true";
+        }
+
+        if (nome !== undefined) {
+            if (typeof nome !== "string" || !nome.trim()) {
+                return res.status(400).json({
+                message: "Nome inválido para busca."
+                });
+            }
+
+            filtros.nome = {
+                contains: nome.trim(),
+                mode: "insensitive"
+            };
         }
 
         const plantas = await PlantaRepository.getPlantas(filtros);
