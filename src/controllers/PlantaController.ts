@@ -117,7 +117,7 @@ export const getPlantas = async(req: Request, res: Response) => {
             });
         }
 
-        const plantas = await PlantaRepository.getPlantas(filtros);
+        const plantas = await PlantaRepository.getPlantas(filtros, ordem);
         return res.status(200).json(plantas)
     }
     catch(error){
