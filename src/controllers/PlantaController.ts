@@ -104,3 +104,29 @@ export const getPlantas = async(req: Request, res: Response) => {
 
     }
 }
+
+export const getPlantaId = async (req:Request, res:Response) => {
+    try{
+        const id = Number(req.params.id);
+
+        if(!Number.isSafeInteger(id) || id<=0) {
+            return res.status(400).json({
+                message: "ID inválido!"
+            });
+        }
+
+        const planta = await PlantaRepository.getPlantasId(id);
+
+        if(!planta){
+            return res.status(404).json({
+                message: "Planta não encontrada!"
+            });
+        }
+
+        return res.status(200).json(planta);
+    } catch(error){
+        return res.status(500).json({
+            message: "Erro ao buscar planta!"
+        });
+    }
+}
