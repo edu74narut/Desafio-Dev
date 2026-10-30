@@ -6,3 +6,7 @@ export const createPlanta = async (data:Prisma.PlantaCreateInput) => {
         data:data
     });
 }
+
+export const getPlantas = async () => {
+    return await prisma.planta.findMany();
+}
