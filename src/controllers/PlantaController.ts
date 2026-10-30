@@ -66,3 +66,16 @@ export const createPlanta =  async(req: Request, res:Response) => {
         })
     }
 }
+
+export const getPlantas = async(req: Request, res: Response) => {
+    try{
+        const plantas = await PlantaRepository.getPlantas();
+        return res.status(200).json(plantas)
+    }
+    catch(error){
+        return res.status(500).json({
+            message: "Erro ao buscar plantas!"
+        })
+
+    }
+}
