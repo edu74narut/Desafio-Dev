@@ -79,3 +79,11 @@ export const getValorTotalEstoque = async () => {
         totalDeVasos
     };
 };
+
+export const getPlantasEsgotadas = async () => {
+    return await prisma.planta.findMany({
+        where: {
+            estoque: 0
+        }
+    });
+};
