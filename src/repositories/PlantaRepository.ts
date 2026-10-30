@@ -20,3 +20,13 @@ export const getPlantasId = async(id:number) => {
         }
     });
 };
+
+export const updatePlanta = async(
+    id:number,
+    data: Prisma.PlantaUpdateInput
+) => {
+    return await prisma.planta.update({
+        where: {id:id},
+        data: data
+    });
+}
