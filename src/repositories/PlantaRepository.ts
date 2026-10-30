@@ -56,3 +56,25 @@ export const venderPlanta = async (id: number, quantidade: number) => {
 
     return resultado.count;
 };
+
+export const getValorTotalEstoque = async () => {
+    const plantas = await prisma.planta.findMany({
+        select: {
+            preco: true,
+            estoque: true
+        }
+    });
+
+    let valorTotalEmCentavos = 0;
+    let totalDeVasos = 0;
+
+    for (const planta of plantas) {
+        valorTotalEmCentavos += planta.preco * planta.estoque;
+        totalDeVasos += planta.estoque;
+    }
+
+    return {
+        valorTotalEmCentavos,
+        totalDeVasos
+    };
+};
