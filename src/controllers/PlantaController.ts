@@ -69,7 +69,7 @@ export const createPlanta =  async(req: Request, res:Response) => {
 
 export const getPlantas = async(req: Request, res: Response) => {
     try{
-        const { luminosidade, petFriend, nome } = req.query;
+        const { luminosidade, petFriend, nome, ordem } = req.query;
         const filtros: Prisma.PlantaWhereInput = {};
         
         if(luminosidade !== undefined){
@@ -105,6 +105,16 @@ export const getPlantas = async(req: Request, res: Response) => {
                 contains: nome.trim(),
                 mode: "insensitive"
             };
+        }
+
+        if(
+            ordem!==undefined &&
+            ordem!=="nome"&&
+            ordem!=="preco"
+        ){
+            return res.status(400).json({
+                message: "A ordem deve ser nome ou preço!"
+            });
         }
 
         const plantas = await PlantaRepository.getPlantas(filtros);
