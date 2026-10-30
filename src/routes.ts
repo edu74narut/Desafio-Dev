@@ -16,5 +16,6 @@ routes.patch("/users/:id", UserController.updateUser);
 routes.delete("/users/:id", UserController.deleteUser);
 
 routes.post("/plantas", PlantaController.createPlanta)
+routes.get("/plantas", PlantaController.getPlantas)
 
 export default routes;
