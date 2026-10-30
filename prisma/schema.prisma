@@ -30,7 +30,7 @@ enum Luminosidade {
 }
 
 model Planta {
-  id            Int           @id @default(autoincrement)
+  id            Int           @id @default(autoincrement())
   nome          String
   especie       String
   preco         Int
