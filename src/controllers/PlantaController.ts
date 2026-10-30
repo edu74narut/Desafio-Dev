@@ -249,3 +249,35 @@ export const updatePlanta = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const deletePlanta = async(req:Request, res:Response) => {
+    try{
+        const id = Number(req.params.id);
+
+        if(!Number.isSafeInteger(id) || id <=0){
+            return res.status(400).json({
+                message:"ID inválido!"
+            });
+        }
+
+        await PlantaRepository.deletePlanta(id);
+        return res.status(200).json({
+            message: "Planta deletada com sucesso!"
+        })
+    } catch(error){
+        if(
+            error instanceof Prisma.PrismaClientKnownRequestError &&
+            error.code === "P2025"
+        ){
+            return res.status(404).json({
+                    message: "Planta não encontrada!"
+                }
+            )
+        }
+
+        return res.status(500).json({
+            message: "Erro ao excluir planta!"
+        })
+
+    }
+}
